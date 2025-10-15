@@ -116,6 +116,7 @@ void do_flash() {
                     uint32_t ints = save_and_disable_interrupts();
                     flash_range_erase(flash_pages[r].address - XIP_BASE, FLASH_SECTOR_SIZE);
                     flash_range_program(flash_pages[r].address - XIP_BASE, flash_pages[r].page, FLASH_SECTOR_SIZE);
+					assert(memcmp(flash_pages[r].page, (uint8_t *)flash_pages[r].address + (uintptr_t) map, FLASH_SECTOR_SIZE) == 0);
                     restore_interrupts(ints);
                     while (multicore_lockout_end_timeout_us(1000) == false) {
                         ;
